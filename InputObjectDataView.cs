@@ -75,15 +75,17 @@ namespace BIT.Xpo.MSML
         public DataViewRowCursor GetRowCursor(
             IEnumerable<DataViewSchema.Column> columnsNeeded,
             Random rand = null)
-
-            => new Cursor(this, columnsNeeded.Any(c => c.Index == 0),
-                columnsNeeded.Any(c => c.Index == 1));
+        {
+            return new Cursor(this, columnsNeeded.Any(c => c.Index == 0),
+                           columnsNeeded.Any(c => c.Index == 1));
+        }
 
         public DataViewRowCursor[] GetRowCursorSet(
             IEnumerable<DataViewSchema.Column> columnsNeeded, int n,
             Random rand = null)
-
-            => new[] { GetRowCursor(columnsNeeded, rand) };
+        {
+            return new[] { GetRowCursor(columnsNeeded, rand) };
+        }
 
         /// <summary>
         /// Having this be a private sealed nested class follows the typical
