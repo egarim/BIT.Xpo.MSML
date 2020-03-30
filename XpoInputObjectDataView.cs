@@ -56,25 +56,17 @@ namespace BIT.Xpo.MSML
     /// of parameters or guard against misuse than we would like from, say,
     /// implementations of the same classes within the ML.NET codebase.
     /// </summary>
-    public class InputObjectDataView : IDataView
+    public class XpoInputObjectDataView : IDataView
     {
         public readonly IEnumerable _data;
         public readonly DevExpress.Xpo.XPDataView _data2;
         public DataViewSchema Schema { get; }
         public bool CanShuffle => false;
 
-        public InputObjectDataView(IEnumerable<InputObject> data)
-        {
-            _data = data;
-
-            var builder = new DataViewSchema.Builder();
-            builder.AddColumn("Label", BooleanDataViewType.Instance);
-            builder.AddColumn("Text", TextDataViewType.Instance);
-            Schema = builder.ToSchema();
-        }
+      
         string TextProperty;
         string BoolProperty;
-        public InputObjectDataView(DevExpress.Xpo.XPView data,string TextProperty,string BoolProperty)
+        public XpoInputObjectDataView(DevExpress.Xpo.XPView data,string TextProperty,string BoolProperty)
         {
             _data = data;
             var Coloumns = data.Properties;
@@ -100,7 +92,7 @@ namespace BIT.Xpo.MSML
         public long? GetRowCount()
         {
             return (_data as XPDataView)?.Count;
-            //return null;
+          
         }
 
         public DataViewRowCursor GetRowCursor(
@@ -118,64 +110,7 @@ namespace BIT.Xpo.MSML
             return new[] { GetRowCursor(columnsNeeded, rand) };
         }
 
-        /// <summary>
-        /// Having this be a private sealed nested class follows the typical
-        /// pattern: in most <see cref="IDataView"/> implementations, the cursor
-        /// instance is almost always that. The only "common" exceptions to this
-        /// tendency are those implementations that are such thin wrappings of
-        /// existing <see cref="IDataView"/> without even bothering to change
-        /// the schema.
-        ///
-        /// On the subject of schema, note that there is an expectation that
-        /// the <see cref="Schema"/> object is reference equal to the
-        /// <see cref="IDataView.Schema"/> object that created this cursor, as
-        /// we see here.
-        ///
-        /// Note that <see cref="Batch"/> returns <c>0</c>. As described in the
-        /// documentation of that property, that is meant to facilitate the
-        /// reconciliation of the partitioning of the data in the case where
-        /// multiple cursors are returned from
-        /// <see cref="GetRowCursorSet(
-        /// IEnumerable{DataViewSchema.Column}, int, Random)"/>, 
-        /// but since only one is ever returned from the implementation, this
-        /// behavior is appropriate.
-        ///
-        /// Similarly, since it is impossible to have a shuffled cursor or a
-        /// cursor set, it is sufficient for the <see cref="GetIdGetter"/>
-        /// implementation to return a simple ID based on the position. If,
-        /// however, this had been something built on, hypothetically, an
-        /// <see cref="IList{T}"/> or some other such structure, and shuffling
-        /// and partitioning was available, an ID based on the index of whatever
-        /// item was being returned would be appropriate.
-        ///
-        /// Note the usage of the <see langword="ref"/> parameters on the
-        /// <see cref="ValueGetter{TValue}"/> implementations. This is most
-        /// valuable in the case of buffer sharing for <see cref="VBuffer{T}"/>,
-        /// but we still of course have to deal with it here.
-        ///
-        /// Note also that we spend a considerable amount of effort to not make
-        /// the <see cref="GetGetter{TValue}(DataViewSchema.Column)"/> and
-        /// <see cref="IsColumnActive(DataViewSchema.Column)"/> methods
-        /// correctly reflect what was asked for from the
-        /// <see cref="GetRowCursor(
-        /// IEnumerable{DataViewSchema.Column}, Random)"/> method that was used
-        /// to create this method. In this particular case, the point is
-        /// somewhat moot: this mechanism exists to enable lazy evaluation,
-        /// but since this cursor is implemented to wrap an
-        /// <see cref="IEnumerator{T}"/> which has no concept of lazy
-        /// evaluation, there is no real practical benefit to doing this.
-        /// However, it is best of course to illustrate the general principle
-        /// for the sake of the example.
-        ///
-        /// Even in this simple form, we see the reason why
-        /// <see cref="GetGetter{TValue}(DataViewSchema.Column)"/> is
-        /// beneficial: the <see cref="ValueGetter{TValue}"/> implementations
-        /// themselves are simple to the point where their operation is dwarfed
-        /// by the simple acts of casting and validation checking one sees in
-        /// <see cref="GetGetter{TValue}(DataViewSchema.Column)"/>. In this way
-        /// we only pay the cost of validation and casting once, not every time
-        /// we get a value.
-        /// </summary>
+       
 
     }
 }

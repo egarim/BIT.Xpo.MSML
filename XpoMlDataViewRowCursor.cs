@@ -20,7 +20,7 @@ namespace BIT.Xpo.MSML
 
         string TextProperty;
         string BoolProperty;
-        public XpoMlDataViewRowCursor(InputObjectDataView parent, bool wantsLabel,
+        public XpoMlDataViewRowCursor(XpoInputObjectDataView parent, bool wantsLabel,
             bool wantsText, string TextProperty, string BoolProperty)
 
         {
