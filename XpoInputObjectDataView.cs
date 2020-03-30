@@ -69,22 +69,14 @@ namespace BIT.Xpo.MSML
         public XpoInputObjectDataView(DevExpress.Xpo.XPView data,string TextProperty,string BoolProperty)
         {
             _data = data;
-            var Coloumns = data.Properties;
+           
             var builder = new DataViewSchema.Builder();
             this.TextProperty = TextProperty;
             this.BoolProperty = BoolProperty;
 
-            builder.AddColumn("Label", BooleanDataViewType.Instance);
-            builder.AddColumn("Text", TextDataViewType.Instance);
+            builder.AddColumn(BoolProperty, BooleanDataViewType.Instance);
+            builder.AddColumn(TextProperty, TextDataViewType.Instance);
 
-            //foreach (ViewProperty viewProperty in data.Properties)
-            //{
-               
-            //    //builder.AddColumn("Label", BooleanDataViewType.Instance);
-            //    //builder.AddColumn("Text", TextDataViewType.Instance);
-
-            //    builder.AddColumn(viewProperty.Name, TextDataViewType.Instance);
-            //}
 
            
             Schema = builder.ToSchema();
