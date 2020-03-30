@@ -107,7 +107,7 @@ namespace BIT.Xpo.MSML
             IEnumerable<DataViewSchema.Column> columnsNeeded,
             Random rand = null)
         {
-            return new Cursor(this, columnsNeeded.Any(c => c.Index == 0),
+            return new XpoMlDataViewRowCursor(this, columnsNeeded.Any(c => c.Index == 0),
                            columnsNeeded.Any(c => c.Index == 1),this.TextProperty,this.BoolProperty);
         }
 

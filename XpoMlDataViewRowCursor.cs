@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace BIT.Xpo.MSML
 {
-    public class Cursor : DataViewRowCursor
+    public class XpoMlDataViewRowCursor : DataViewRowCursor
     {
         private bool _disposed;
         private long _position;
@@ -20,7 +20,7 @@ namespace BIT.Xpo.MSML
 
         string TextProperty;
         string BoolProperty;
-        public Cursor(InputObjectDataView parent, bool wantsLabel,
+        public XpoMlDataViewRowCursor(InputObjectDataView parent, bool wantsLabel,
             bool wantsText, string TextProperty, string BoolProperty)
 
         {
