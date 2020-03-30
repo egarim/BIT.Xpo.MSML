@@ -47,7 +47,12 @@ namespace BIT.Xpo.MSML
                 return;
             if (disposing)
             {
-                //_enumerator.Dispose();
+                IDisposable disposable = _enumerator as IDisposable;
+                if(disposable!=null)
+                {
+                    disposable.Dispose();
+                }
+             
                 _position = -1;
             }
             _disposed = true;
