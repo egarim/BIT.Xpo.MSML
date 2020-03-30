@@ -59,7 +59,7 @@ namespace BIT.Xpo.MSML
     public class XpoInputObjectDataView : IDataView
     {
         public readonly IEnumerable _data;
-        public readonly DevExpress.Xpo.XPDataView _data2;
+       
         public DataViewSchema Schema { get; }
         public bool CanShuffle => false;
 
