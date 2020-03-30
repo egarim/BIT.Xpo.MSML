@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using System.Collections;
+using DevExpress.Xpo;
 
 namespace BIT.Xpo.MSML
 {
@@ -56,7 +58,8 @@ namespace BIT.Xpo.MSML
     /// </summary>
     public class InputObjectDataView : IDataView
     {
-        public readonly IEnumerable<InputObject> _data;
+        public readonly IEnumerable _data;
+        public readonly DevExpress.Xpo.XPDataView _data2;
         public DataViewSchema Schema { get; }
         public bool CanShuffle => false;
 
@@ -69,15 +72,43 @@ namespace BIT.Xpo.MSML
             builder.AddColumn("Text", TextDataViewType.Instance);
             Schema = builder.ToSchema();
         }
+        string TextProperty;
+        string BoolProperty;
+        public InputObjectDataView(DevExpress.Xpo.XPView data,string TextProperty,string BoolProperty)
+        {
+            _data = data;
+            var Coloumns = data.Properties;
+            var builder = new DataViewSchema.Builder();
+            this.TextProperty = TextProperty;
+            this.BoolProperty = BoolProperty;
 
-        public long? GetRowCount() => null;
+            builder.AddColumn("Label", BooleanDataViewType.Instance);
+            builder.AddColumn("Text", TextDataViewType.Instance);
+
+            //foreach (ViewProperty viewProperty in data.Properties)
+            //{
+               
+            //    //builder.AddColumn("Label", BooleanDataViewType.Instance);
+            //    //builder.AddColumn("Text", TextDataViewType.Instance);
+
+            //    builder.AddColumn(viewProperty.Name, TextDataViewType.Instance);
+            //}
+
+           
+            Schema = builder.ToSchema();
+        }
+        public long? GetRowCount()
+        {
+            return (_data as XPDataView)?.Count;
+            //return null;
+        }
 
         public DataViewRowCursor GetRowCursor(
             IEnumerable<DataViewSchema.Column> columnsNeeded,
             Random rand = null)
         {
             return new Cursor(this, columnsNeeded.Any(c => c.Index == 0),
-                           columnsNeeded.Any(c => c.Index == 1));
+                           columnsNeeded.Any(c => c.Index == 1),this.TextProperty,this.BoolProperty);
         }
 
         public DataViewRowCursor[] GetRowCursorSet(
