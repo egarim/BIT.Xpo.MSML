@@ -87,17 +87,13 @@ namespace BIT.Xpo.MSML
           
         }
 
-        public DataViewRowCursor GetRowCursor(
-            IEnumerable<DataViewSchema.Column> columnsNeeded,
-            Random rand = null)
+        public DataViewRowCursor GetRowCursor(IEnumerable<DataViewSchema.Column> columnsNeeded, Random rand = null)
         {
             return new XpoMlDataViewRowCursor(this, columnsNeeded.Any(c => c.Index == 0),
                            columnsNeeded.Any(c => c.Index == 1),this.TextProperty,this.BoolProperty);
         }
 
-        public DataViewRowCursor[] GetRowCursorSet(
-            IEnumerable<DataViewSchema.Column> columnsNeeded, int n,
-            Random rand = null)
+        public DataViewRowCursor[] GetRowCursorSet(IEnumerable<DataViewSchema.Column> columnsNeeded, int n, Random rand = null)
         {
             return new[] { GetRowCursor(columnsNeeded, rand) };
         }
